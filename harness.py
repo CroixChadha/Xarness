@@ -4,6 +4,7 @@
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+from openai import APIConnectionError
 import sys
 
 
@@ -26,15 +27,16 @@ def load_config():
     return client, model_name
 
 
-# TODO(xstack): def ask_model(...): takes the client, the model name and the messages list
-def ask_model(client, model_name):
-    responses = client.chat.completions.create
-    return responses
-# TODO(xstack):   send them with client.chat.completions.create
-# TODO(xstack):   return just the reply text (no printing in here)
+def ask_model(client, model_name, messages):
+    responses = client.chat.completions.create(model=model_name, messages=messages)
+    return responses.choices[0].message.content
 
-
-# TODO(xstack): temporary run block: if __name__ == "__main__":
-# TODO(xstack):   get the client and model name from load_config()
-# TODO(xstack):   build a messages list with one hard-coded user message
-# TODO(xstack):   call ask_model() and print what it returns
+if __name__ == "__main__":
+    client, model_name = load_config()
+    messages = [{"role": "user", "content": "This is a test message, what is the capital of France?"}]
+    try:
+        print(ask_model(client=client, model_name=model_name, messages=messages))
+    except APIConnectionError:
+        sys.exit("Model server unreachable, please check the env.")
+    
+    
