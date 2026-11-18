@@ -1,0 +1,23 @@
+# Secrets: server address, model name, API keys (any folder)
+.env
+.env.*
+!.env.example
+
+# xstack learning docs and safety-hook config (local only)
+docs/xstack/
+.xstack/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Google ADK side experiment leftovers
+.adk/
+
+# Editor and OS leftovers
+.DS_Store
+.vscode/
+
+# Claude instructions (local only for now)
+CLAUDE.md
